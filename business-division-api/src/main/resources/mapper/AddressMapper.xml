@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.gob.diviac.business.division.adapter.output.mybatis.mapper.AddressMapper">
+
+    <insert id="insert" parameterType="SaveAddressDto">
+        INSERT INTO generales.tb_direccion(
+            int_id_direccion,
+            vch_desc_direccion,
+            vch_numero,
+            int_id_tipo_direccion,
+            int_id_distrito,
+            bol_estado,
+            vch_usuario_creacion,
+            dtm_fecha_creacion,
+            int_rol_usuario_creacion)
+        VALUES (
+        #{id},
+        UPPER(#{name}),
+        UPPER(#{number}),
+        #{directionTypeId},
+        #{districtId},
+        true,
+        'DEAFAULT',
+        now(),
+        1)
+    </insert>
+
+    <update id="update" parameterType="UpdateAddressDto">
+        UPDATE generales.tb_direccion
+            SET int_id_distrito = #{districtId},
+            int_id_tipo_direccion = #{directionTypeId},
+            vch_desc_direccion = UPPER(#{name}),
+            vch_numero = UPPER(#{number})
+        WHERE int_id_direccion = #{id}
+            AND bol_estado = true
+    </update>
+
+    <update id="delete" parameterType="java.lang.Long">
+        UPDATE generales.tb_direccion
+            SET bol_estado = false
+        WHERE int_id_direccion = #{id}
+    </update>
+
+    <select id="getSequence" resultType="java.lang.Long">
+        SELECT nextval('generales.tb_direccion_int_id_direccion_seq')
+    </select>
+
+</mapper>

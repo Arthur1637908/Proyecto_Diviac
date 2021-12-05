@@ -1,0 +1,31 @@
+// Size
+$font-size-base: 12;
+$font-size: $font-size-base;
+$font-sizes: ( 
+    12: (size: $font-size), 
+    14: (size: $font-size + 2), 
+    16: (size: $font-size + 4), 
+    18: (size: $font-size + 6), 
+    20: (size: $font-size + 8), 
+    22: (size: $font-size + 10), 
+    24: (size: $font-size + 12),
+    26: (size: $font-size + 14),
+    28: (size: $font-size + 16),
+    30: (size: $font-size + 18),
+    32: (size: $font-size + 20),
+    34: (size: $font-size + 22),
+    36: (size: $font-size + 24),
+    38: (size: $font-size + 26),
+    40: (size: $font-size + 28), 
+    48: (size: $font-size + 36), 
+    56: (size: $font-size + 44), 
+    64: (size: $font-size + 52));
+
+
+@each $size,
+$sizes in $font-sizes {
+    $s: map-get($sizes, size);
+    .u-fz-#{$size} {
+        font-size: #{$s}px;
+    }
+}

@@ -1,0 +1,31 @@
+<div class="Title__content">
+    <h2>Actualizar Efectivo</h2>
+    <div class="Content__button">
+        <div class="u-margin-r-16 inline-block">
+            <a mat-raised-button color="accent" routerLink="/dashboard/efectivo/crear">CREAR EFECTIVO</a>
+        </div>
+        <div class="inline-block">
+            <button (click)="confirmDeletePolice()" mat-raised-button color="warn">ELIMINAR EFECTIVO</button>
+        </div>
+    </div>
+</div>
+
+<div class="u-padding-x-24 u-padding-t-24">
+    <app-back-button></app-back-button>
+</div>
+
+<div class="u-padding-24">
+    <div class="u-bg-white">
+        <mat-tab-group mat-align-tabs="start">
+            <mat-tab label="Información General">
+                <app-police-general-information [policeId]="policeId"></app-police-general-information>
+            </mat-tab>
+            <mat-tab label="Situación">
+                <app-police-situation [policeId]="policeId"></app-police-situation>
+            </mat-tab>
+            <mat-tab label="Documentos">
+                <app-police-documents [policeId]="policeId"></app-police-documents>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

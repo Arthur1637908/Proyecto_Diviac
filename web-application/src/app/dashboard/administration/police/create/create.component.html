@@ -1,0 +1,126 @@
+<div class="Title__content">
+    <h2>Crear Efectivo</h2>
+</div>
+
+<div class="u-padding-x-24 u-padding-t-24">
+    <app-back-button></app-back-button>
+</div>
+
+<div class="u-padding-24">
+
+    <form [formGroup]="policeForm">
+        <div class="Card_wrapper u-margin-b-40">
+            <div class="width-100 u-margin-x-8">
+                <div class="Card__title u-margin-b-24">Datos del Efectivo</div>
+                <div class="Card__content">
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>Primer Nombre</mat-label>
+                            <input matInput placeholder="Ingrese el primer nombre del Efectivo"
+                                formControlName="firstName">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>Segundo Nombre</mat-label>
+                            <input matInput placeholder="Ingrese el segundo nombre del Efectivo"
+                                formControlName="secondName">
+                        </mat-form-field>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>Apellido Paterno</mat-label>
+                            <input matInput placeholder="Ingrese el apellido paterno del Efectivo"
+                                formControlName="lastName">
+                        </mat-form-field>
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>Apellido Materno</mat-label>
+                            <input matInput placeholder="Ingrese el apellido materno del Efectivo"
+                                formControlName="secondLastName">
+                        </mat-form-field>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Estado Civil</mat-label>
+                            <mat-select formControlName="civilStatusId">
+                                <mat-option>Seleccionar</mat-option>
+                                <mat-option *ngFor="let item of maritalStatus" [value]="item.id">
+                                    {{item.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <section class="width-100 u-margin-x-8 u-padding-t-16">
+                            <label class="u-font-light u-margin-r-16">Sexo:</label>
+                            <mat-radio-group formControlName="genderId">
+                                <mat-radio-button *ngFor="let gender of genders"
+                                    class="u-margin-x-8 u-font-regular u-fz-14" [value]="gender.id">
+                                    {{gender.name}}
+                                </mat-radio-button>
+                            </mat-radio-group>
+                        </section>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Fecha de Nacimiento</mat-label>
+                            <input matInput [matDatepicker]="picker" formControlName="dateOfBirth">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <div class="width-100 u-margin-x-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="Card_wrapper u-margin-b-24">
+            <div class="width-100 u-margin-x-8">
+                <div class="Card__title u-margin-b-24">Información Adicional</div>
+                <div class="Card__content">
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Cargo</mat-label>
+                            <mat-select formControlName="positionId">
+                                <mat-option>Seleccionar</mat-option>
+                                <mat-option *ngFor="let position of positions" [value]="position.id">
+                                    {{position.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Grado</mat-label>
+                            <mat-select formControlName="gradeId">
+                                <mat-option>Seleccionar</mat-option>
+                                <mat-option *ngFor="let grade of grades" [value]="grade.id">
+                                    {{grade.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>CIP</mat-label>
+                            <input matInput placeholder="Ingrese el CIP del Efectivo" formControlName="cip">
+                        </mat-form-field>
+                        <app-division-dropdown-pagination class="width-100 u-margin-x-8"
+                            (divisionSelected)="divisionSelected($event)">
+                        </app-division-dropdown-pagination>
+                    </div>
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                            <mat-label>Seudónimo</mat-label>
+                            <input matInput placeholder="Ingrese el seudónimo del Efectivo" formControlName="pseudonym">
+                        </mat-form-field>
+                        <div class="width-100 u-margin-x-8"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+            <div class="u-margin-8">
+                <button mat-raised-button color="primary" [disabled]="!policeForm.valid"
+                    (click)="createPolice(policeForm.value)">GUARDAR</button>
+            </div>
+            <div class="u-margin-8">
+                <a mat-raised-button routerLink="/dashboard/efectivo">CANCELAR</a>
+            </div>
+        </div>
+    </form>
+</div>

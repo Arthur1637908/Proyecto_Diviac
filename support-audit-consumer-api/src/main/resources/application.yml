@@ -1,0 +1,28 @@
+server:
+  port: 8080
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST_NAME:localhost:29092}
+    consumer:
+      auto-offset-reset: latest
+      group-id: default-consumer
+      value-deserializer: pe.com.gob.diviac.support.audit.consumer.util.deserializer.AuditDeserializer
+      max-poll-records: 1
+      fetch-max-wait: 36000
+      enable-auto-commit: false
+      client-id: support-audit-consumer-api
+    listener:
+      poll-timeout: 1800000
+      concurrency: 1
+  data:
+    mongodb:
+      authentication-database: admin
+      database: ${MONGO_DB:my-db}
+      host: ${MONGO_HOST:localhost}
+      port: ${MONGO_PORT:27017}
+      username: ${MONGO_USERNAME:root}
+      password: ${MONGO_PASS:root}
+      repositories:
+        enabled: true
+

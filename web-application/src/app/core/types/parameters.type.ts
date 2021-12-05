@@ -1,0 +1,1 @@
+export type groupCode = 'TP01' | 'TP02' | 'TP03' | 'TP04' | 'TP05' | 'TP06' | 'TP07' | 'TP08' | 'TP09' | 'TP10' | 'TP11' | 'TP12' | 'TP13' | 'TP14' | 'TP15';

@@ -1,0 +1,32 @@
+# Application Configuration
+server:
+  port: 8080
+  servlet:
+    context-path: /business/parameter-management/v1
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# DataSource Configuration
+spring:
+  datasource:
+    type: com.zaxxer.hikari.HikariDataSource
+    driverClassName: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/db_diviac
+    username: postgres
+    password: ${POSTGRES_PASS:securePassword123.}
+    hikari:
+      connectionTimeout: 30000
+      idleTimeout: 10000
+      maxLifetime: 40000
+    validation-query: SELECT 1
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+    properties:
+      hibernate:
+        enable_lazy_load_no_trans: true
+  main:
+    allow-bean-definition-overriding: true
+    lazy_initialization: true

@@ -1,0 +1,239 @@
+version: "3"
+services:
+
+  # Database Services
+  mongo:
+    image: mongo:4.2
+    container_name: mongo
+    ports:
+    - 27017:27017
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: my-db
+    volumes:
+      - /data/db:/data/db
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: db_diviac
+      POSTGRES_PASSWORD: securePassword123.
+    volumes:
+      - ./database-resources/order_db/:/docker-entrypoint-initdb.d/
+
+  # Keycloak service
+  keycloak:
+    image: keycloak-diviac:v1
+    container_name: keycloak-diviac
+    environment:
+      KEYCLOAK_WELCOME_THEME: diviac
+      KEYCLOAK_DEFAULT_THEME: diviac
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: root
+      DB_VENDOR: POSTGRES
+      DB_ADDR: postgres
+      DB_DATABASE: db_diviac
+      DB_USER: postgres
+      DB_SCHEMA: keycloak
+      DB_PASSWORD: securePassword123.
+    ports:
+      - 8180:8080
+    depends_on:
+      - postgres
+
+  # Api Gateway
+  opa-gateway:
+    image: openpolicyagent/opa:latest
+    container_name: opa-gateway
+    volumes:
+      - ./policy_gateway.rego:/config/policy_gateway.rego
+    ports:
+      - "9093:9093"
+    command:
+      - "run"
+      - "--log-level=debug"
+      - "--log-format=json-pretty"
+      - "--server"
+      - "--addr=:9093"
+      - "--diagnostic-addr=:9192"
+      - "--set=decision_logs.console=true"
+      - "/config/policy_gateway.rego"
+    depends_on:
+      - keycloak
+
+  # Audit Services
+  zookeeper:
+    image: wurstmeister/zookeeper:latest
+    container_name: zookeeper
+    ports:
+      - 2181:2181
+    volumes:
+      - /data/zookeeper/data:/data
+      - /data/zookeeper/datalog:/datalog
+  kafka:
+    image: wurstmeister/kafka:2.12-2.4.1
+    container_name: kafka
+    ports:
+      - 9092:9092
+      - 29092:29092
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ADVERTISED_HOST_NAME: kafka
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: 'false'
+      KAFKA_LISTENERS: PLAINTEXT://:9092,PLAINTEXT_HOST://:29092
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092,PLAINTEXT_HOST://localhost:29092
+      KAFKA_MESSAGE_MAX_BYTES: 2000000
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      ALLOW_PLAINTEXT_LISTENER: "yes"
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /data/kafka/data:/var/lib/kafka/data
+    depends_on:
+      - zookeeper
+    links:
+      - zookeeper:zookeeper
+  support-audit-producer-api:
+    image: support-audit-producer-api:0.0.1-SNAPSHOT
+    container_name: support-audit-producer-api
+    ports:
+      - 9090:8080
+    environment:
+      KAFKA_HOST_NAME: kafka:9092
+    depends_on:
+      - kafka
+      - zookeeper
+    links:
+      - kafka:kafka
+  support-audit-consumer-api:
+    image: support-audit-consumer-api:0.0.1-SNAPSHOT
+    container_name: support-audit-consumer-api
+    ports:
+      - 9091:8080
+    environment:
+      KAFKA_HOST_NAME: kafka:9092
+      MONGO_DB: my-db
+      MONGO_HOST: mongo
+      MONGO_PORT: 27017
+      MONGO_USERNAME: root
+      MONGO_PASS: root
+    depends_on:
+      - kafka
+      - zookeeper
+      - mongo
+      - support-audit-producer-api
+    links:
+      - kafka:kafka
+      - mongo:mongo
+  
+  # Business APIs Services
+
+  #api parameter
+  business-parameter-api:
+    image: business-parameter-api:0.0.1-SNAPSHOT
+    container_name: business-parameter-api
+    ports:
+      - 8080:8080
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_PASS: securePassword123.
+    depends_on:
+      - support-audit-producer-api
+      - support-audit-consumer-api
+      - postgres
+    links:
+      - postgres:postgres
+  
+  #api division
+  envoy-division:
+    build: ./business-division-api/envoy
+    container_name: envoy-division
+    ports:
+      - "8585:8585"
+    volumes:
+      - ./business-division-api/envoy/envoy.yaml:/config/envoy.yaml
+      - ./business-division-api/envoy/public_key.json:/etc/envoy/jwks/public_key.json
+    environment:
+      - DEBUG_LEVEL=debug
+      - SERVICE_NAME=business-division-api
+      - SERVICE_PORT=8080
+  opa-division:
+    image: openpolicyagent/opa:0.21.1-istio
+    container_name: opa-division
+    volumes:
+      - ./business-division-api/opa/division_policy_rbac.rego:/config/division_policy_rbac.rego
+    command:
+      - "run"
+      - "--log-level=debug"
+      - "--log-format=json-pretty"
+      - "--server"
+      - "--set=plugins.envoy_ext_authz_grpc.addr=:9191"
+      - "--set=decision_logs.console=true"
+      - "/config/division_policy_rbac.rego"
+  business-division-api:
+    image: business-division-api:0.0.1-SNAPSHOT
+    container_name: business-division-api
+    ports:
+      - 8091:8080
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_PASS: securePassword123.
+    depends_on:
+      - support-audit-producer-api
+      - support-audit-consumer-api
+      - postgres
+    links:
+      - postgres:postgres
+  
+  
+  #api police
+  business-police-api:
+    image: business-police-api:0.0.1-SNAPSHOT
+    container_name: business-police-api
+    ports:
+      - 8082:8080
+    environment:
+      POSTGRES_HOST: postgres
+      POSTGRES_PORT: 5432
+      POSTGRES_PASS: securePassword123.
+    depends_on:
+      - support-audit-producer-api
+      - support-audit-consumer-api
+      - postgres
+    links:
+      - postgres:postgres
+
+  #Channel APIs Services
+  channel-parameter-api:
+    image: channel-parameter-api:0.0.1-SNAPSHOT
+    container_name: channel-parameter-api
+    ports:
+      - 28080:8080
+    environment:
+      BUSINESS_PARAMETER_API_HOST: business-parameter-api
+      BUSINESS_PARAMETER_API_PORT: 8080
+    depends_on:
+      - support-audit-producer-api
+      - support-audit-consumer-api
+      - business-parameter-api
+    links:
+      - business-parameter-api:business-parameter-api
+  channel-administration-api:
+    image: channel-administration-api:0.0.1-SNAPSHOT
+    container_name: channel-administration-api
+    ports:
+      - 28081:8080
+    environment:
+      BUSINESS_DIVISION_API_HOST: business-division-api
+      BUSINESS_DIVISION_API_PORT: 8080
+    depends_on:
+      - support-audit-producer-api
+      - support-audit-consumer-api
+      - business-division-api
+    links:
+      - business-division-api:business-division-api

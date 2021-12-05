@@ -1,0 +1,11 @@
+.Card_wrapper {
+  background-color: white;
+  padding: 24px;
+  box-shadow: 0 0 5px rgb(0 0 0 / 5%);
+
+  .Card__title {
+    font-family: 'font-semibold';
+    font-size: 20px;
+    color: rgb(120, 120, 120);
+  }
+}

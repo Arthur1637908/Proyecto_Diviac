@@ -1,0 +1,339 @@
+{
+  "openapi":"3.0.1",
+  "info":{
+    "title":"OpenAPI definition",
+    "version":"v0"
+  },
+  "servers":[
+    {
+      "url":"http://localhost:8080/business/parameter-management/v1",
+      "description":"Generated server url"
+    }
+  ],
+  "tags":[
+    {
+      "name":"Parameters",
+      "description":"Parameter Controller"
+    },
+    {
+      "name":"Ubigeos",
+      "description":"Ubigeo Controller"
+    }
+  ],
+  "paths":{
+    "/ubigeos/provinces":{
+      "get":{
+        "tags":[
+          "Ubigeos"
+        ],
+        "summary":"Get provinces by departmentId",
+        "description":"Get provinces by departmentId",
+        "operationId":"findProvincesByIdDepartment",
+        "parameters":[
+          {
+            "name":"departmentId",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "maximum":999,
+              "minimum":1,
+              "type":"integer",
+              "format":"int32"
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ProvinceBusinessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ubigeos/districts":{
+      "get":{
+        "tags":[
+          "Ubigeos"
+        ],
+        "summary":"Get districts by provinceId",
+        "description":"Get districts by provinceId",
+        "operationId":"findDistrictsByIdProvince",
+        "parameters":[
+          {
+            "name":"provinceId",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "maximum":9999,
+              "minimum":1,
+              "type":"integer",
+              "format":"int32"
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DistrictBusinessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/ubigeos/departments":{
+      "get":{
+        "tags":[
+          "Ubigeos"
+        ],
+        "summary":"Get all departments",
+        "description":"Get all departments",
+        "operationId":"findAllDepartments",
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DepartmentBusinessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/parameters":{
+      "get":{
+        "tags":[
+          "Parameters"
+        ],
+        "summary":"Get parameters by groupCode",
+        "description":"Get parameters by groupCode",
+        "operationId":"findParametersByGroupCode",
+        "parameters":[
+          {
+            "name":"groupCode",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "pattern":"TP[0-9]{2}",
+              "type":"string"
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ParameterBusinessResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components":{
+    "schemas":{
+      "ErrorInformation":{
+        "required":[
+          "errorCode",
+          "errorDescription"
+        ],
+        "type":"object",
+        "properties":{
+          "errorCode":{
+            "type":"string",
+            "description":"Error code",
+            "example":"DV0001"
+          },
+          "errorDescription":{
+            "type":"string",
+            "description":"Description of the error",
+            "example":"Error when calling service"
+          }
+        }
+      },
+      "ProvinceBusinessResponse":{
+        "required":[
+          "id",
+          "name"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Identifier of the province",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the province",
+            "example":"LIMA"
+          }
+        }
+      },
+      "DistrictBusinessResponse":{
+        "required":[
+          "id",
+          "name"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Identifier of the district",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the district",
+            "example":"MAGDALENA"
+          }
+        }
+      },
+      "DepartmentBusinessResponse":{
+        "required":[
+          "id",
+          "name"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Identifier of the department",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the department",
+            "example":"LIMA"
+          }
+        }
+      },
+      "ParameterBusinessResponse":{
+        "required":[
+          "id",
+          "name",
+          "state"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Identifier of the parameter",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the parameter",
+            "example":"Avenida"
+          },
+          "state":{
+            "type":"boolean",
+            "description":"State of the parameter",
+            "example":false
+          }
+        }
+      }
+    }
+  }
+}

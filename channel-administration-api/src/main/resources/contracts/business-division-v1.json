@@ -1,0 +1,749 @@
+{
+  "openapi":"3.0.1",
+  "info":{
+    "title":"OpenAPI definition",
+    "version":"v0"
+  },
+  "servers":[
+    {
+      "url":"http://localhost:8080/business/division-management/v1",
+      "description":"Generated server url"
+    }
+  ],
+  "tags":[
+    {
+      "name":"Division",
+      "description":"Division Controller"
+    }
+  ],
+  "paths":{
+    "/divisions/{id}":{
+      "get":{
+        "tags":[
+          "Division"
+        ],
+        "summary":"Get division",
+        "description":"Get division by id",
+        "operationId":"getDivision",
+        "parameters":[
+          {
+            "name":"id",
+            "in":"path",
+            "required":true,
+            "schema":{
+              "pattern":"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+              "type":"string",
+              "description":"Id of the division",
+              "example":"4cc80a99-7fb6-4618-b1a0-f0d7a9328118"
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "404":{
+            "description":"Resource not found",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DivisionRestResponseBusiness"
+                }
+              }
+            }
+          }
+        }
+      },
+      "put":{
+        "tags":[
+          "Division"
+        ],
+        "summary":"Put division",
+        "description":"Update division",
+        "operationId":"updateDivision",
+        "parameters":[
+          {
+            "name":"id",
+            "in":"path",
+            "required":true,
+            "schema":{
+              "pattern":"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+              "type":"string",
+              "description":"Id of the division",
+              "example":"4cc80a99-7fb6-4618-b1a0-f0d7a9328118"
+            }
+          }
+        ],
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/UpdateDivisionRestRequestBusiness"
+              }
+            }
+          },
+          "required":true
+        },
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "404":{
+            "description":"Resource not found",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DivisionRestResponseBusiness"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete":{
+        "tags":[
+          "Division"
+        ],
+        "summary":"Delete division",
+        "description":"Delete division",
+        "operationId":"deleteDivision",
+        "parameters":[
+          {
+            "name":"id",
+            "in":"path",
+            "required":true,
+            "schema":{
+              "pattern":"[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}",
+              "type":"string",
+              "description":"Id of the division",
+              "example":"4cc80a99-7fb6-4618-b1a0-f0d7a9328118"
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "*/*":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "404":{
+            "description":"Resource not found",
+            "content":{
+              "*/*":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "*/*":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok"
+          }
+        }
+      }
+    },
+    "/divisions":{
+      "get":{
+        "tags":[
+          "Division"
+        ],
+        "summary":"Get divisions",
+        "description":"Get division by code or name",
+        "operationId":"getDivisionList",
+        "parameters":[
+          {
+            "name":"code",
+            "in":"query",
+            "required":false,
+            "schema":{
+              "pattern":"[A-Z0-9]{0,50}",
+              "type":"string",
+              "description":"Code of the division",
+              "example":"COD01"
+            }
+          },
+          {
+            "name":"name",
+            "in":"query",
+            "required":false,
+            "schema":{
+              "pattern":"[A-ZÁ-ÜÑ -]{0,255}",
+              "type":"string",
+              "description":"Name of the division",
+              "example":"NAME"
+            }
+          },
+          {
+            "name":"currentPage",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "maximum":9999,
+              "minimum":1,
+              "type":"integer",
+              "description":"Current page of the pagination",
+              "format":"int32",
+              "example":1
+            }
+          },
+          {
+            "name":"pageSize",
+            "in":"query",
+            "required":true,
+            "schema":{
+              "maximum":999,
+              "minimum":1,
+              "type":"integer",
+              "description":"Page size of the pagination",
+              "format":"int32",
+              "example":20
+            }
+          }
+        ],
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "404":{
+            "description":"Not Found",
+            "content":{
+              "*/*":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DivisionListRestResponseBusiness"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post":{
+        "tags":[
+          "Division"
+        ],
+        "summary":"Post division",
+        "description":"Create division",
+        "operationId":"insertDivision",
+        "requestBody":{
+          "content":{
+            "application/json":{
+              "schema":{
+                "$ref":"#/components/schemas/SaveDivisionRestRequestBusiness"
+              }
+            }
+          },
+          "required":true
+        },
+        "responses":{
+          "400":{
+            "description":"Bad request",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "404":{
+            "description":"Not Found",
+            "content":{
+              "*/*":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "500":{
+            "description":"Internal server error",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/ErrorInformation"
+                }
+              }
+            }
+          },
+          "200":{
+            "description":"Already Ok",
+            "content":{
+              "application/json":{
+                "schema":{
+                  "$ref":"#/components/schemas/DivisionRestResponseBusiness"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components":{
+    "schemas":{
+      "ErrorInformation":{
+        "required":[
+          "errorCode",
+          "errorDescription"
+        ],
+        "type":"object",
+        "properties":{
+          "errorCode":{
+            "type":"string",
+            "description":"Error code",
+            "example":"DV0001"
+          },
+          "errorDescription":{
+            "type":"string",
+            "description":"Description of the error",
+            "example":"Error when calling service"
+          }
+        }
+      },
+      "AddressTypeRestBusiness":{
+        "required":[
+          "id"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "maximum":9999,
+            "minimum":1,
+            "type":"integer",
+            "description":"Id of the Address type",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Id of the Address type",
+            "example":"AVENIDA"
+          }
+        }
+      },
+      "ContactRestBusiness":{
+        "required":[
+          "annexNumber",
+          "email",
+          "phoneNumber"
+        ],
+        "type":"object",
+        "properties":{
+          "email":{
+            "pattern":"[A-Z0-9_\\-.]{1,240}(@POLICIA.GOB.PE|@GMAIL.COM|@HOTMAIL.COM)",
+            "type":"string",
+            "description":"Email of the contact",
+            "example":"EMAIL@POLICIA.GOB.PE"
+          },
+          "phoneNumber":{
+            "pattern":"[0-9]{1,255}",
+            "type":"string",
+            "description":"Phonenumber of the contact",
+            "example":"5522113"
+          },
+          "annexNumber":{
+            "pattern":"[0-9]{1,255}",
+            "type":"string",
+            "description":"Annexnumber of the contact",
+            "example":"3212"
+          }
+        }
+      },
+      "DistrictRestBusiness":{
+        "required":[
+          "id"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "maximum":9999,
+            "minimum":1,
+            "type":"integer",
+            "description":"Id of the Address district",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the Address district",
+            "example":"LOS OLIVOS"
+          }
+        }
+      },
+      "UpdateAddressRestBusiness":{
+        "required":[
+          "district",
+          "name",
+          "number",
+          "type"
+        ],
+        "type":"object",
+        "properties":{
+          "name":{
+            "pattern":"[A-Z0-9Á-ÜÑ\\-./ ]{1,255}",
+            "type":"string",
+            "description":"Name of the Address",
+            "example":"JR. PUNO"
+          },
+          "number":{
+            "pattern":"[A-Z0-9Ñ\\-./ ]{1,255}",
+            "type":"string",
+            "description":"Number of the Address",
+            "example":"123"
+          },
+          "type":{
+            "$ref":"#/components/schemas/AddressTypeRestBusiness"
+          },
+          "district":{
+            "$ref":"#/components/schemas/DistrictRestBusiness"
+          }
+        }
+      },
+      "UpdateDivisionRestRequestBusiness":{
+        "required":[
+          "address",
+          "contact"
+        ],
+        "type":"object",
+        "properties":{
+          "acronym":{
+            "pattern":"[A-Z0-9]{1,255}",
+            "type":"string",
+            "description":"Acronym of the Division",
+            "example":"SGL"
+          },
+          "description":{
+            "pattern":"[A-Z0-9Á-ÜÑ\\(\\)_;\\-:,. ]{1,255}",
+            "type":"string",
+            "description":"Description of the Division",
+            "example":"DIVISION DESCRIPTION"
+          },
+          "address":{
+            "$ref":"#/components/schemas/UpdateAddressRestBusiness"
+          },
+          "contact":{
+            "$ref":"#/components/schemas/ContactRestBusiness"
+          }
+        }
+      },
+      "AddressRestBusiness":{
+        "required":[
+          "department",
+          "district",
+          "id",
+          "name",
+          "number",
+          "province",
+          "type"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Id of the Address",
+            "format":"int64",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the Address",
+            "example":"JR. PUNO"
+          },
+          "number":{
+            "type":"string",
+            "description":"Number of the Address",
+            "example":"123"
+          },
+          "type":{
+            "$ref":"#/components/schemas/AddressTypeRestBusiness"
+          },
+          "district":{
+            "$ref":"#/components/schemas/DistrictRestBusiness"
+          },
+          "province":{
+            "$ref":"#/components/schemas/ProvinceRestBusiness"
+          },
+          "department":{
+            "$ref":"#/components/schemas/DepartmentRestBusiness"
+          }
+        }
+      },
+      "DepartmentRestBusiness":{
+        "required":[
+          "id"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Id of the department",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the department",
+            "example":"LIMA"
+          }
+        }
+      },
+      "DivisionRestResponseBusiness":{
+        "required":[
+          "acronym",
+          "address",
+          "code",
+          "contact",
+          "description",
+          "id",
+          "name"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"string",
+            "description":"Id of the division",
+            "example":"4cc80a99-7fb6-4618-b1a0-f0d7a9328118"
+          },
+          "code":{
+            "type":"string",
+            "description":"Code of the division",
+            "example":"DV001"
+          },
+          "acronym":{
+            "type":"string",
+            "description":"Acronym of the division",
+            "example":"SGL"
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the division",
+            "example":"DIVISION NAME"
+          },
+          "description":{
+            "type":"string",
+            "description":"Description of the division",
+            "example":"DIVISION DESCRIPTION"
+          },
+          "address":{
+            "$ref":"#/components/schemas/AddressRestBusiness"
+          },
+          "contact":{
+            "$ref":"#/components/schemas/ContactRestBusiness"
+          }
+        }
+      },
+      "ProvinceRestBusiness":{
+        "required":[
+          "id"
+        ],
+        "type":"object",
+        "properties":{
+          "id":{
+            "type":"integer",
+            "description":"Id of the province",
+            "format":"int32",
+            "example":1
+          },
+          "name":{
+            "type":"string",
+            "description":"Name of the province",
+            "example":"LIMA"
+          }
+        }
+      },
+      "SaveAddressRestBusiness":{
+        "required":[
+          "district",
+          "name",
+          "number",
+          "type"
+        ],
+        "type":"object",
+        "properties":{
+          "name":{
+            "pattern":"[A-Z0-9Á-ÜÑ\\-./ ]{1,255}",
+            "type":"string",
+            "description":"Name of the Address",
+            "example":"JR. PUNO"
+          },
+          "number":{
+            "pattern":"[A-Z0-9Ñ\\-./ ]{1,255}",
+            "type":"string",
+            "description":"Number of the Address",
+            "example":"123"
+          },
+          "type":{
+            "$ref":"#/components/schemas/AddressTypeRestBusiness"
+          },
+          "district":{
+            "$ref":"#/components/schemas/DistrictRestBusiness"
+          }
+        }
+      },
+      "SaveDivisionRestRequestBusiness":{
+        "required":[
+          "address",
+          "contact",
+          "name"
+        ],
+        "type":"object",
+        "properties":{
+          "acronym":{
+            "pattern":"[A-Z0-9]{1,255}",
+            "type":"string",
+            "description":"Acronym of the Division",
+            "example":"SGL"
+          },
+          "name":{
+            "pattern":"[A-ZÁ-ÜÑ -]{0,255}",
+            "type":"string",
+            "description":"Name of the Division",
+            "example":"DIVISION NAME"
+          },
+          "description":{
+            "pattern":"[A-Z0-9Á-ÜÑ\\(\\)_;\\-:,. ]{1,255}",
+            "type":"string",
+            "description":"Description of the Division",
+            "example":"DIVISION DESCRIPTION"
+          },
+          "address":{
+            "$ref":"#/components/schemas/SaveAddressRestBusiness"
+          },
+          "contact":{
+            "$ref":"#/components/schemas/ContactRestBusiness"
+          }
+        }
+      },
+      "DivisionListRestResponseBusiness":{
+        "type":"object",
+        "properties":{
+          "page":{
+            "$ref":"#/components/schemas/PageRestBusiness"
+          },
+          "divisions":{
+            "type":"array",
+            "items":{
+              "$ref":"#/components/schemas/DivisionRestResponseBusiness"
+            }
+          }
+        }
+      },
+      "PageRestBusiness":{
+        "required":[
+          "numberOfPages",
+          "totalNumberOfItems"
+        ],
+        "type":"object",
+        "properties":{
+          "totalNumberOfItems":{
+            "type":"integer",
+            "description":"Total number of items",
+            "format":"int32",
+            "example":1
+          },
+          "numberOfPages":{
+            "type":"integer",
+            "description":"Page number current",
+            "format":"int32",
+            "example":1
+          }
+        }
+      }
+    }
+  }
+}

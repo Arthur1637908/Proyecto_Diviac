@@ -1,0 +1,44 @@
+<div class="Dropdown__pagination">
+    <form [formGroup]="divisionSearchForm">
+        <button [disabled]="(
+            (
+                (divisionSearchForm.value.name == '') || 
+                (divisionSearchForm.value.name == null)
+            )
+        ) || !divisionSearchForm.valid" style="float: right; margin-top: 15px;" mat-raised-button color="accent"
+            (click)="searchDivision(divisionSearchForm.value)">BUSCAR</button>
+        <div style="margin-right: 100px" class="DP__input">
+            <mat-form-field appearance="outline" class="width-100">
+                <mat-label>División de Pertenencia</mat-label>
+                <input matInput placeholder="Ingrese el nombre de la División" formControlName="name">
+            </mat-form-field>
+            <div class="DP__clean" *ngIf="divisionSearchForm.value.name != ''">
+                <button mat-icon-button color="warn" (click)="resetPagination()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            <div class="DP__List" *ngIf="filterActive">
+                <div *ngIf="divisions.length == 0">
+                    <p class="u-font-light u-padding-24 align-center u-color-black-3 u-fz-14">
+                        No hay divisiones para mostrar.
+                    </p>
+                </div>
+                <div *ngIf="divisions.length != 0">
+                    <div class="List__items">
+                        <mat-selection-list #shoes [multiple]="false">
+                            <mat-list-option *ngFor="let division of divisions" [value]="division.id"
+                                (click)="onAreaListControlChanged(division)">
+                                {{ division.name }}
+                            </mat-list-option>
+                        </mat-selection-list>
+                    </div>
+                    <div class="List__pagination">
+                        <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="currentPage - 1"
+                            hidePageSize="true">
+                        </mat-paginator>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

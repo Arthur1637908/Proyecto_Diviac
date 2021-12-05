@@ -1,0 +1,36 @@
+.Panel {
+    .Panel__title {
+        text-align: center;
+        img, h3 {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    .devider {
+        height: 1px;
+        background: rgba(120, 130, 140, 0.13);
+        display: block;
+    }
+    .Panel__content {
+        .Content__item {
+            ul {
+                li {
+                    a {
+                        display: block;
+                        text-decoration: none;
+                        svg {
+                            float: right;
+                        }
+                        transition: .3s all ease;
+                        &:hover {
+                            color: white;
+                        }
+                    }
+                    .active {
+                        color: white;
+                    }
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,22 @@
+// Color classes
+$colors: ('black', $black),
+('black-3', $black-3),
+('yellow', $yellow),
+('white', $white),
+('white-2', $white-2),
+('title', $title),
+('gray', $gray),
+('black-2', $black-2);
+
+@each $name,
+$color in $colors {
+    .u-color-#{$name} {
+        color: $color;
+    }
+    .u-bg-#{$name} {
+        background-color: $color;
+    }
+    .u-placeholder-#{$name} {
+        placeholder-color: $color;
+    }
+}

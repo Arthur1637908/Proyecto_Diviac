@@ -1,0 +1,33 @@
+.Header {
+    &__logo {
+        float: left;
+        img {
+            width: 60px;
+        }
+        img, p {
+            display: inline-block;
+            vertical-align: middle;
+        }
+    }
+    &__nav {
+        float: right;
+        ul {
+            li {
+                display: inline-block;
+                a {
+                    display: block;
+                    text-decoration: none;
+                    color: rgb(200,200,200);
+                    transition: 0.3s all ease;
+                    text-transform: uppercase;
+                    &:hover {
+                        color: white;
+                    }
+                }
+                .active {
+                    color: white;
+                }
+            }
+        }
+    }
+}

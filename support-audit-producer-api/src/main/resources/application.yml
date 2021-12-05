@@ -1,0 +1,32 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /support/audit-producer-management/v1
+  error:
+    include-message: always
+    include-binding-errors: always
+
+spring:
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST_NAME:localhost:29092}
+    topics:
+      default:
+        name: default-topic
+        partitions: 1
+        replicas: 1
+      administration:
+        name: administration
+        partitions: 1
+        replicas: 1
+      specials-resources:
+        name: specials-resources
+        partitions: 1
+        replicas: 1
+      criminal-investigation:
+        name: criminal-investigation
+        partitions: 1
+        replicas: 1
+    producer:
+      client-id: support-audit-producer-api
+      value-serializer: pe.com.gob.diviac.support.audit.producer.util.serializer.AuditSerializer
+      retries: 2

@@ -1,0 +1,29 @@
+.Footer {
+    border-top: 2px solid rgb(0 0 0 / 8%);
+    overflow: hidden;
+    .logo {
+        float: left;
+        img, p {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        img {
+            width: 70px;
+        }
+        p {
+            margin-left: 24px;
+        }
+    }
+    .info {
+        float: right;
+        ul {
+            li {
+                padding: 6px 0;
+                font-size: 12px;
+                span {
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

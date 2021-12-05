@@ -1,0 +1,124 @@
+<div class="u-padding-24">
+    <form [formGroup]="situationPoliceForm">
+        <div class="u-margin-b-24">
+            <div class="width-100">
+                <div class="Card__content">
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Situación</mat-label>
+                            <mat-select formControlName="situationId">
+                                <mat-option>Seleccionar</mat-option>
+                                <mat-option *ngFor="let situation of situationTypes" [value]="situation.id">
+                                    {{situation.name}}
+                                </mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                        <app-division-dropdown-pagination class="width-100 u-margin-x-8"
+                            [initialValue]="currentDivisionName" (divisionSelected)="divisionSelected($event)">
+                        </app-division-dropdown-pagination>
+                    </div>
+                </div>
+            </div>
+            <div class="width-100">
+                <div class="Card__content">
+                    <div style="display: flex; flex-direction: row">
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Fecha de Inicio</mat-label>
+                            <input matInput [matDatepicker]="pickerStartDate" formControlName="startDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerStartDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerStartDate></mat-datepicker>
+                        </mat-form-field>
+                        <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                            <mat-label>Fecha de Fin</mat-label>
+                            <input matInput [matDatepicker]="pickerEndDate" formControlName="endDate">
+                            <mat-datepicker-toggle matSuffix [for]="pickerEndDate"></mat-datepicker-toggle>
+                            <mat-datepicker #pickerEndDate></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </div>
+            <div class="u-margin-t-16" *ngIf="editDocument">
+                <mat-form-field class="width-100 u-margin-x-8">
+                    <ngx-mat-file-input formControlName="document" placeholder="Sustento" [accept]="'.pdf'">
+                    </ngx-mat-file-input>
+                    <mat-icon matSuffix>folder</mat-icon>
+                </mat-form-field>
+            </div>
+            <div class="u-margin-t-16" style="overflow: hidden;"
+                *ngIf="currentDocumentName!='' && updateState && !editDocument">
+                <div class="u-padding-16 align-center"
+                    style="border-radius: 5px; background-color: #ecf0f1; float: left; position: relative;">
+                    <button (click)="updateDocument()" style="position: absolute; top: 10px; right: 10px;" mat-mini-fab
+                        color="accent" aria-label="Example icon button with a plus one icon">
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <img width="60" src="assets/images/pdf_icon.jpg" alt="">
+                    <p class="u-margin-t-8 u-color-title-2 u-font-light u-fz-14">{{ currentDocumentName }}</p>
+                </div>
+            </div>
+        </div>
+
+        <div style="display: flex; flex-direction: row; justify-content: right;">
+            <div class="u-margin-8">
+                <button mat-raised-button color="primary" (click)="createSituation(situationPoliceForm.value)"
+                    *ngIf="!updateState"
+                    [disabled]="!situationPoliceForm.valid || (currentDivisionIdSelected == '')">CARGAR</button>
+                <button mat-raised-button color="primary" (click)="confirmUpdateSituation(situationPoliceForm.value)"
+                    *ngIf="updateState"
+                    [disabled]="!situationPoliceForm.valid || (currentDivisionIdSelected == '')">ACTUALIZAR</button>
+            </div>
+            <div class="u-margin-8">
+                <button mat-raised-button (click)="resetForm()">LIMPIAR</button>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="u-padding-24">
+    <mat-paginator [length]="length" [pageSize]="pageSize" [pageIndex]="currentPage - 1"
+        (page)="handlePageEvent($event)" [pageSizeOptions]="pageSizeOptions">
+    </mat-paginator>
+    <table mat-table [dataSource]="situations" class="mat-elevation-z8 width-100">
+
+        <ng-container matColumnDef="division">
+            <th mat-header-cell *matHeaderCellDef> Division </th>
+            <td mat-cell *matCellDef="let element"> {{element.division.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="situation">
+            <th mat-header-cell *matHeaderCellDef> Situación </th>
+            <td mat-cell *matCellDef="let element"> {{element.situationType.name}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="startDate">
+            <th mat-header-cell *matHeaderCellDef> Fecha de inicio </th>
+            <td mat-cell *matCellDef="let element"> {{element.startDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="endDate">
+            <th mat-header-cell *matHeaderCellDef> Fecha Fin </th>
+            <td mat-cell *matCellDef="let element"> {{element.endDate}} </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element" style="text-align: right;">
+                <div class="inline-block u-margin-r-16">
+                    <button mat-stroked-button color="primary" (click)="situationDetail(element)">Detalle</button>
+                </div>
+                <div class="inline-block">
+                    <button mat-icon-button color="warn" aria-label="Example icon button with a heart icon"
+                        (click)="confirmDeleteSituation(element.id)">
+                        <mat-icon>delete</mat-icon>
+                    </button>
+                </div>
+            </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div *ngIf="situations.length == 0">
+        <p class="u-font-light u-padding-32 align-center u-color-black-3 u-fz-22">No hay efectivos para mostrar.
+        </p>
+    </div>
+</div>

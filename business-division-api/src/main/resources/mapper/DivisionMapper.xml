@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pe.com.gob.diviac.business.division.adapter.output.mybatis.mapper.DivisionMapper">
+
+    <resultMap id="divisionResultMap" type="ResponseDivisionDto">
+        <id property="id" column="vch_id_division" javaType="String"/>
+        <result property="code" column="vch_cod_division" javaType="String"/>
+        <result property="acronym" column="vch_siglas" javaType="String"/>
+        <result property="name" column="vch_nombre_division" javaType="String"/>
+        <result property="description" column="vch_desc_division" javaType="String"/>
+        <result property="addressId" column="int_id_direccion" javaType="Long"/>
+        <result property="addressName" column="vch_desc_direccion" javaType="String"/>
+        <result property="addressNumber" column="vch_numero" javaType="String"/>
+        <result property="addressTypeId" column="int_id_tipo_direccion" javaType="Integer"/>
+        <result property="addressTypeName" column="vch_desc_parametro" javaType="String"/>
+        <result property="addressDistrictId" column="int_id_distrito" javaType="Integer"/>
+        <result property="addressDistrictName" column="vch_nombre_distrito" javaType="String"/>
+        <result property="addressProvinceId" column="int_id_provincia" javaType="Integer"/>
+        <result property="addressProvinceName" column="vch_nombre_provincia" javaType="String"/>
+        <result property="addressDepartmentId" column="int_id_departamento" javaType="Integer"/>
+        <result property="addressDepartmentName" column="vch_nombre_departamento" javaType="String"/>
+        <result property="email" column="vch_correo" javaType="String"/>
+        <result property="phoneNumber" column="vch_telefono" javaType="String"/>
+        <result property="annexNumber" column="vch_anexo" javaType="String"/>
+    </resultMap>
+
+    <select id="findAllByCodeAndName" resultMap="divisionResultMap">
+        SELECT
+            CAST(vch_id_division AS varchar) vch_id_division,
+            div.vch_cod_division,
+            div.vch_siglas,
+            div.vch_nombre_division,
+            div.vch_desc_division,
+            div.int_id_direccion,
+            dir.vch_desc_direccion,
+            dir.vch_numero,
+            dir.int_id_tipo_direccion,
+            par.vch_desc_parametro,
+            dir.int_id_distrito,
+            dis.vch_nombre_distrito,
+            dis.int_id_provincia,
+            pro.vch_nombre_provincia,
+            pro.int_id_departamento,
+            dep.vch_nombre_departamento,
+            div.vch_correo,
+            div.vch_telefono,
+            div.vch_anexo
+        FROM administracion.tb_division div
+        INNER JOIN generales.tb_direccion dir
+        ON div.int_id_direccion = dir.int_id_direccion
+        INNER JOIN generales.tb_parametro par
+        ON dir.int_id_tipo_direccion = par.int_id_parametro
+        INNER JOIN generales.tb_distrito dis
+        ON dir.int_id_distrito = dis.int_id_distrito
+        INNER JOIN generales.tb_provincia pro
+        ON dis.int_id_provincia = pro.int_id_provincia
+        INNER JOIN generales.tb_departamento dep
+        ON pro.int_id_departamento = dep.int_id_departamento
+        WHERE
+            div.vch_cod_division like CONCAT('%', CASE WHEN COALESCE(#{code},'') = '' THEN div.vch_cod_division ELSE #{code} end, '%')
+            AND div.vch_nombre_division LIKE CONCAT('%', CASE WHEN COALESCE(#{name}, '') = '' THEN div.vch_nombre_division ELSE #{name} END,'%')
+            AND div.bol_estado = true
+            AND dir.bol_estado = true
+        ORDER BY div.vch_cod_division LIMIT #{pageSize} OFFSET (#{currentPage} - 1) * #{pageSize}
+    </select>
+
+    <select id="findById" resultMap="divisionResultMap">
+        SELECT
+            CAST(vch_id_division AS varchar) vch_id_division,
+            div.vch_cod_division,
+            div.vch_siglas,
+            div.vch_nombre_division,
+            div.vch_desc_division,
+            div.int_id_direccion,
+            dir.vch_desc_direccion,
+            dir.vch_numero,
+            dir.int_id_tipo_direccion,
+            par.vch_desc_parametro,
+            dir.int_id_distrito,
+            dis.vch_nombre_distrito,
+            dis.int_id_provincia,
+            pro.vch_nombre_provincia,
+            pro.int_id_departamento,
+            dep.vch_nombre_departamento,
+            div.vch_correo,
+            div.vch_telefono,
+            div.vch_anexo
+        FROM administracion.tb_division div
+        INNER JOIN generales.tb_direccion dir
+        ON div.int_id_direccion = dir.int_id_direccion
+        INNER JOIN generales.tb_parametro par
+        ON dir.int_id_tipo_direccion = par.int_id_parametro
+        INNER JOIN generales.tb_distrito dis
+        ON dir.int_id_distrito = dis.int_id_distrito
+        INNER JOIN generales.tb_provincia pro
+        ON dis.int_id_provincia = pro.int_id_provincia
+        INNER JOIN generales.tb_departamento dep
+        ON pro.int_id_departamento = dep.int_id_departamento
+        WHERE
+            div.vch_id_division = CAST (#{id} AS uuid)
+            AND div.bol_estado = true
+            AND dir.bol_estado = true
+    </select>
+
+    <select id="getCountRows" resultType="java.lang.Integer">
+        SELECT
+            COUNT(1)
+        FROM administracion.tb_division div
+        INNER JOIN generales.tb_direccion dir
+        ON div.int_id_direccion = dir.int_id_direccion
+        INNER JOIN generales.tb_parametro par
+        ON dir.int_id_tipo_direccion = par.int_id_parametro
+        INNER JOIN generales.tb_distrito dis
+        ON dir.int_id_distrito = dis.int_id_distrito
+        INNER JOIN generales.tb_provincia pro
+        ON dis.int_id_provincia = pro.int_id_provincia
+        INNER JOIN generales.tb_departamento dep
+        ON pro.int_id_departamento = dep.int_id_departamento
+        WHERE
+            div.vch_cod_division like CONCAT('%', CASE WHEN COALESCE(#{code},'') = '' THEN div.vch_cod_division ELSE #{code} end, '%')
+            AND div.vch_nombre_division LIKE CONCAT('%', CASE WHEN COALESCE(#{name}, '') = '' THEN div.vch_nombre_division ELSE #{name} END,'%')
+            AND div.bol_estado = true
+            AND dir.bol_estado = true
+    </select>
+
+    <insert id="insert" parameterType="SaveDivisionDto">
+        INSERT INTO administracion.tb_division(
+            vch_id_division,
+            vch_cod_division,
+            vch_siglas,
+            vch_nombre_division,
+            vch_desc_division,
+            int_id_direccion,
+            vch_correo,
+            vch_telefono,
+            vch_anexo,
+            bol_estado,
+            vch_usuario_creacion,
+            dtm_fecha_creacion,
+            int_rol_usuario_creacion)
+        VALUES (
+            CAST (#{id} AS uuid),
+            (SELECT CONCAT('DIV',COALESCE((LPAD(((MAX(SUBSTRING(vch_cod_division,4))::INTEGER + 1)::VARCHAR),3,'0')),'001')) FROM administracion.tb_division),
+            UPPER(#{acronym}),
+            UPPER(#{name}),
+            UPPER(#{description}),
+            #{addressId},
+            UPPER(#{email}),
+            #{phoneNumber},
+            #{annexNumber},
+            true,
+            'DEAFAULT',
+            now(),
+            1)
+    </insert>
+
+    <update id="update" parameterType="UpdateDivisionDto">
+        UPDATE administracion.tb_division
+            SET vch_siglas = UPPER(#{acronym}),
+            vch_desc_division = UPPER(#{description}),
+            vch_correo = UPPER(#{email}),
+            vch_telefono = #{phoneNumber},
+            vch_anexo = #{annexNumber}
+        WHERE vch_id_division = CAST (#{id} AS uuid)
+            AND bol_estado = true
+    </update>
+
+    <update id="delete" parameterType="java.lang.String">
+        UPDATE administracion.tb_division
+            SET bol_estado = false
+        WHERE vch_id_division = CAST (#{id} AS uuid)
+    </update>
+
+</mapper>

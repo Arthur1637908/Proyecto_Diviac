@@ -1,0 +1,20 @@
+.Title__content {
+    background-color: white;
+    padding: 20px 24px;
+    box-shadow: 1px 0 5px rgba(0, 0, 0, 0.1);
+    h2 {
+        font-family: 'font-light';
+        font-size: 32px;
+        font-weight: 100;
+        color: $title;
+        text-transform: uppercase;
+        display: inline-block;
+        span {
+            font-family: 'font-regular';
+            text-transform: none;
+        }
+    }
+    .Content__button {
+        float: right;
+    }
+}

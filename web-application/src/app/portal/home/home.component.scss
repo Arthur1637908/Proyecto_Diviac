@@ -1,0 +1,160 @@
+.carousel-cell {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position-x: center;
+  background-position-y: center;
+}
+
+.Home__ptic {
+  .PTIC__title {
+    text-align: center;
+
+    p {
+      color: rgb(70, 70, 70);
+    }
+  }
+
+  .PTIC__list {
+    .PTIC__item {
+      text-decoration: none;
+      float: left;
+      width: 33.3%;
+      padding: 24px;
+      position: relative;
+      transition: .3s all ease;
+      opacity: 0.9;
+
+      .item__title {
+        text-align: center;
+
+        p {
+          color: rgb(50, 50, 50);
+          text-transform: uppercase;
+        }
+      }
+
+      .item__image {
+        height: 200px;
+        padding: 16px;
+
+        img {
+          width: 100%;
+        }
+      }
+
+      .item__description {
+        p {
+          line-height: 26px;
+          color: rgb(80, 80, 80);
+        }
+      }
+
+      &:hover {
+        transform: scale(1.05);
+        opacity: 1;
+        background-color: rgb(248,248,248);
+        box-shadow: 0 0 5px rgba(0,0,0,.1);
+      }
+    }
+  }
+}
+
+.Home__download {
+  background-color: rgb(248, 248, 248);
+
+  .Download__title {
+    text-align: center;
+
+    p {
+      color: rgb(70, 70, 70);
+      text-transform: uppercase;
+    }
+  }
+
+  .Download__list {
+    .Download__item {
+      float: left;
+      width: 33.3%;
+      padding: 16px;
+
+      a {
+        background-color: white;
+        border-radius: 2px;
+        box-shadow: 0 0 3px rgba(0, 0, 0, .15);
+        text-decoration: none;
+        display: block;
+        padding: 24px;
+        text-align: center;
+        transition: .3s all ease;
+
+        .Item__image {
+          margin-bottom: 32px;
+
+          img {
+            height: 60px;
+          }
+        }
+
+        .Item__title {
+          p {
+            text-transform: uppercase;
+            color: rgb(70, 70, 70);
+          }
+        }
+
+        &:hover {
+          transform: scale(1.05);
+        }
+      }
+
+    }
+  }
+}
+
+.Home__testimonials {
+  .Testimonials__title {
+    text-align: center;
+
+    p {
+      color: rgb(70, 70, 70);
+      text-transform: uppercase;
+    }
+  }
+
+  .Testimonials__list {
+    .Testimonials__item {
+      float: left;
+      width: 33.3%;
+      padding: 16px;
+
+      .Item__wrapper {
+        padding: 24px;
+        border: 1px solid rgb(245 245 245);
+        box-shadow: -10px 10px 20px rgba(0, 0, 0, 0.15);
+        min-height: 234px;
+
+        .Item__author {
+            margin-bottom: 24px;
+            img {
+                width: 50px;
+                margin-right: 16px;
+            }
+            img, p {
+                display: inline-block;
+                vertical-align: middle;
+            }
+            p {
+                color: rgb(70, 70, 70);
+                text-transform: uppercase;
+            }
+        }
+        .Item__text {
+            p {
+                line-height: 22px;
+                color: rgb(80, 80, 80);
+            }
+        }
+      }
+    }
+  }
+}

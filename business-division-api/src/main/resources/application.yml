@@ -1,0 +1,38 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /business/division-management/v1
+  error:
+    include-message: always
+    include-binding-errors: always
+
+# DataSource Configuration
+spring:
+  datasource:
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/db_diviac
+    username: postgres
+    password: ${POSTGRES_PASS:securePassword123.}
+    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: org.postgresql.Driver
+    auto-commit: true
+    maximum-pool-size: 100
+    max-idle: 10
+    max-wait: 10000
+    min-idle: 5
+    validation-query: SELECT 1
+
+  # Spring Jpa Configuration
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+        format_sql: true
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+# MyBatis Configuration
+mybatis:
+  mapper-locations: classpath:mapper/*.xml
+  type-aliases-package: pe.com.gob.diviac.business.division.adapter.output.mybatis.alias
+

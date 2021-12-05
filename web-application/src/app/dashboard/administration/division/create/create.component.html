@@ -1,0 +1,110 @@
+<div class="Title__content">
+    <h2>Crear División</h2>
+</div>
+
+<div class="u-padding-x-24 u-padding-t-24">
+    <app-back-button></app-back-button>
+</div>
+
+<div class="u-padding-24">
+    <form [formGroup]="divisionForm">
+        <div class="Card_wrapper u-margin-b-24">
+            <div class="Card__title u-margin-b-24">División</div>
+            <div class="Card__content">
+                <div style="display: flex; flex-direction: row">
+                    <mat-form-field appearance="outline" class="width-100 u-margin-r-8">
+                        <mat-label>Nombre</mat-label>
+                        <input matInput placeholder="Ingrese el nombre de la División" formControlName="name">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="width-100 u-margin-l-8">
+                        <mat-label>Siglas</mat-label>
+                        <input matInput placeholder="Ingrese las siglas de la División" formControlName="acronym">
+                    </mat-form-field>
+                </div>
+                <mat-form-field appearance="outline" class="width-100">
+                    <mat-label>Descripción</mat-label>
+                    <textarea matInput placeholder="Ingrese una descrición de la División"
+                        formControlName="description"></textarea>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="Card_wrapper u-margin-b-24">
+            <div class="Card__title u-margin-b-24">Dirección</div>
+            <div class="Card__content">
+                <div style="display: flex; flex-direction: row">
+                    <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                        <mat-label>Departamento</mat-label>
+                        <mat-select formControlName="department" (selectionChange)="departmentChange($event)">
+                            <mat-option>Seleccionar</mat-option>
+                            <mat-option *ngFor="let department of departments" [value]="department.id">
+                                {{department.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                        <mat-label>Provincia</mat-label>
+                        <mat-select formControlName="province" (selectionChange)="provinceChange($event)">
+                            <mat-option>Seleccionar</mat-option>
+                            <mat-option *ngFor="let province of provinces" [value]="province.id">{{province.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                        <mat-label>Distrito</mat-label>
+                        <mat-select formControlName="district">
+                            <mat-option>Seleccionar</mat-option>
+                            <mat-option *ngFor="let district of districts" [value]="district.id">{{district.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div style="display: flex; flex-direction: row">
+                    <mat-form-field appearance="fill" class="width-100 u-margin-x-8">
+                        <mat-label>Tipo</mat-label>
+                        <mat-select formControlName="typeAddress">
+                            <mat-option>Seleccionar</mat-option>
+                            <mat-option *ngFor="let parameter of parameters" [value]="parameter.id">{{parameter.name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                        <mat-label>Dirección</mat-label>
+                        <input matInput placeholder="Ingrese la dirección de la División" formControlName="address">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                        <mat-label>Número</mat-label>
+                        <input matInput placeholder="Ingrese el número de la División" formControlName="addressNumber">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div class="Card_wrapper u-margin-b-24">
+            <div class="Card__title u-margin-b-24">Contacto</div>
+            <div class="Card__content">
+                <div style="display: flex; flex-direction: row">
+                    <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                        <mat-label>Correo</mat-label>
+                        <input matInput placeholder="Ingrese el correo de la División" formControlName="email">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                        <mat-label>Teléfono</mat-label>
+                        <input matInput placeholder="Ingrese el teléfono de la División" formControlName="phoneNumber">
+                    </mat-form-field>
+                    <mat-form-field appearance="outline" class="width-100 u-margin-x-8">
+                        <mat-label>Anexo</mat-label>
+                        <input matInput placeholder="Ingrese el anexo de la División" formControlName="annex">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: center;">
+            <div class="u-margin-8">
+                <button mat-raised-button color="primary" (click)="createDivision(divisionForm.value)"
+                    [disabled]="!divisionForm.valid">GUARDAR</button>
+            </div>
+            <div class="u-margin-8">
+                <a mat-raised-button routerLink="/dashboard">CANCELAR</a>
+            </div>
+        </div>
+    </form>
+</div>

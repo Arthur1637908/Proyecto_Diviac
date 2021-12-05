@@ -1,0 +1,25 @@
+.Dropdown__pagination {
+    .DP__input {
+        position: relative;
+        .DP__clean {
+            position: absolute;
+            top: 13px;
+            right: 5px;
+        }
+        .DP__List {
+            z-index: 1;
+            position: absolute;
+            top: 64px;
+            left: 0;
+            width: 100%;
+            border: 1px solid rgb(220,220,220);
+            border-radius: 5px;
+            background-color: white;
+            overflow: hidden;
+            .List__items {
+                max-height: 200px;
+                overflow: auto;
+            }
+        }
+    }
+}

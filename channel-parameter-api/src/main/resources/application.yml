@@ -1,0 +1,22 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /channel/parameter-management/v1
+  error:
+    include-message: always
+    include-binding-errors: always
+
+feign:
+  client:
+    config:
+      business-parameter-api:
+        base-url: http://${BUSINESS_PARAMETER_API_HOST:localhost}:${BUSINESS_PARAMETER_API_PORT:8080}/business/parameter-management/v1/
+        connectTimeout: 25000
+        readTimeout: 30000
+        writeTimeout: 25000
+        loggerLevel: basic
+
+spring:
+  main:
+    allow-bean-definition-overriding: true
+    lazy_initializatieon: true
